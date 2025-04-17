@@ -1,44 +1,48 @@
-create table Books (
-    book_id int PRIMARY KEY,
-    title text not null ,
-    author_id int not null ,
-    genre text , 
-    publication_year int,
-    FOREIGN KEY (author_id) REFERENCES Authors(author_id)
+CREATE TABLE Authors (
+    author_id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    nationality TEXT,
+    birth_date DATE,
+    death_date DATE
 );
 
-create table Authors (
-    author_id int primary key ,
-    name text not null ,
-    nationality text,
-    birth_date date,
-    death_date date 
+CREATE TABLE Books (
+    book_id INTEGER PRIMARY KEY,
+    title TEXT NOT NULL,
+    genre TEXT,
+    publication_year INTEGER
 );
 
-create table Users (
-    user_id int PRIMARY KEY , 
-    user_name text not null ,
-    contact_number int 
+-- Mapping table for many-to-many relationship
+CREATE TABLE BookAuthors (
+    book_id INTEGER NOT NULL,
+    author_id INTEGER NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (author_id) REFERENCES Authors(author_id),
+    PRIMARY KEY (book_id, author_id)
 );
 
-create table Borrowings (
-    borrowing_id int primary key,
-    book_id int not null,
-    user_id int not null,
-    borrowing_data date not null,
-    return_data date,
+CREATE TABLE Users (
+    user_id INTEGER PRIMARY KEY,
+    user_name TEXT NOT NULL,
+    contact_number TEXT
+);
+
+CREATE TABLE Borrowings (
+    borrowing_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    book_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    borrowing_date DATE NOT NULL,
+    return_date DATE,
     FOREIGN KEY (book_id) REFERENCES Books(book_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
-)
+);
 
-create table Reservations (
-    reservation_id int primary key,
-    book_id int not null,
-    user_id int not null,
-    reservation_data date not null,
+CREATE TABLE Reservations (
+    reservation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    book_id INTEGER NOT NULL,
+    user_id INTEGER NOT NULL,
+    reservation_date DATE NOT NULL,
     FOREIGN KEY (book_id) REFERENCES Books(book_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
-)
-
-
-
+);
